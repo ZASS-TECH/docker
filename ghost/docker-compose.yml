@@ -1,0 +1,41 @@
+version: '3.1'
+
+services:
+  ghost:
+    image: ghost:4-alpine
+    restart: always
+    ports:
+      - 5000:2368
+    environment:
+      # see https://ghost.org/docs/config/#configuration-options
+      database__connection__host: db
+      database__connection__user: root
+#     todo Change your DB password
+      database__connection__password: your_password
+      database__connection__database: ghost
+      mail__transport: SMTP
+#     todo Change the values below to your system email configuration
+      mail__options__host: example.com
+      mail__options__port: 465
+      mail__options__auth__user: your-email@example.com
+      mail__options__auth__pass: your_email_password
+      logging__level: info
+      logging__rotation__enabled: "true"
+      logging__rotation__count: 30
+      logging__rotation__period: 1d
+#     todo Change this to your domain name
+      url: https://example.com
+      # contrary to the default mentioned in the linked documentation, this image defaults to NODE_ENV=production (so development mode needs to be explicitly specified if desired)
+      #NODE_ENV: development
+    volumes:
+      - ./ghost-content:/var/lib/ghost/content
+
+  db:
+    image: mysql:8
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+#     todo Change your DB password
+      MYSQL_ROOT_PASSWORD: "your_password"
+    volumes:
+      - ./mysql:/var/lib/mysql
