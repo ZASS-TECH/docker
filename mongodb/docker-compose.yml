@@ -1,5 +1,8 @@
+
 version: '3.1'
+
 services:
+
   mongo:
     image: mongo
     restart: always
@@ -9,8 +12,8 @@ services:
     ports:
       - 27017:27017
     volumes:
-        - ./mongo:/data/db
-   mongo-express:
+      - ./mongo:/data/db
+  mongo-express:
     image: mongo-express
     restart: always
     ports:
